@@ -41,58 +41,93 @@ public class Lab04 extends Application {
         Label tripDays = new Label("Enter the number of days on the trip");
         gp.add(tripDays, 0, 0);
         
-        TextField userTripDays = new TextField("0.00");
+        TextField userTripDays = new TextField("0");
         gp.add(userTripDays, 1, 0);
 
         Label airfare = new Label("Enter the amount paid for flight");
         gp.add(airfare, 0, 1);
         
-        TextField userAirfare = new TextField();
+        TextField userAirfare = new TextField("0.00");
         gp.add(userAirfare, 1, 1);
         
         Label carRental = new Label("Enter the amount paid for rental car");
         gp.add(carRental, 0, 2);
         
-        TextField userCarRental = new TextField();
+        TextField userCarRental = new TextField("0.00");
         gp.add(userCarRental, 1, 2);
         
         Label miles = new Label("Enter the number of miles driven");
         gp.add(miles, 0, 3);
         
-        TextField userMiles = new TextField();
+        TextField userMiles = new TextField("0.00");
         gp.add(userMiles, 1, 3);
         
         Label parkingFees = new Label("Enter the amount paid for parking");
         gp.add(parkingFees, 0, 4);
         
-        TextField userParkingFees = new TextField();
+        TextField userParkingFees = new TextField("0.00");
         gp.add(userParkingFees, 1, 4);
         
         Label taxiCharges = new Label("Enter the amount paid for taxis");
         gp.add(taxiCharges, 0, 5);
         
-        TextField userTaxiCharges = new TextField();
+        TextField userTaxiCharges = new TextField("0.00");
         gp.add(userTaxiCharges, 1, 5);
         
         Label registration = new Label("Enter the amount paid for registration fees");
         gp.add(registration, 0, 6);
         
-        TextField userRegistration = new TextField();
+        TextField userRegistration = new TextField("0.00");
         gp.add(userRegistration, 1, 6);
         
         Label lodging = new Label("Enter the amount paid for lodging each day");
         gp.add(lodging, 0, 7);
         
-        TextField userLodging = new TextField();
+        TextField userLodging = new TextField("0.00");
         gp.add(userLodging, 1, 7);
         
         userTripDays.setOnKeyTyped(e -> {
-            userTripDays.setText(checkText(userTripDays.getText()));
+            for (int i = 0; i < userTripDays.getText().length(); i++) {
+                if(!Character.isDigit(userTripDays.getText().charAt(i))) {
+                userTripDays.setText(userTripDays.getText().substring(0, i) + userTripDays.getText().substring(i + 1, userTripDays.getText().length()));
+                }
+            }
             userTripDays.positionCaret(userTripDays.getText().length());
-//            if(!Character.isDigit(userTripDays.getText().charAt(userTripDays.getText().length() - 1)) && '.' != userTripDays.getText().charAt(userTripDays.getText().length() - 1)) {
-//                userTripDays.setText(userTripDays.getText().substring(0, userTripDays.getText().length() - 1));
-//                userTripDays.positionCaret(userTripDays.getText().length());
-//            }
+        });
+        
+        userAirfare.setOnKeyTyped(e -> {
+            userAirfare.setText(checkText(userAirfare.getText()));
+            userAirfare.positionCaret(userAirfare.getText().length());
+        });
+        
+        userCarRental.setOnKeyTyped(e -> {
+            userCarRental.setText(checkText(userCarRental.getText()));
+            userCarRental.positionCaret(userCarRental.getText().length());
+        });
+        
+        userMiles.setOnKeyTyped(e -> {
+            userMiles.setText(checkText(userMiles.getText()));
+            userMiles.positionCaret(userMiles.getText().length());
+        });
+        
+        userParkingFees.setOnKeyTyped(e -> {
+            userParkingFees.setText(checkText(userParkingFees.getText()));
+            userParkingFees.positionCaret(userParkingFees.getText().length());
+        });
+        
+        userTaxiCharges.setOnKeyTyped(e -> {
+            userTaxiCharges.setText(checkText(userTaxiCharges.getText()));
+            userTaxiCharges.positionCaret(userTaxiCharges.getText().length());
+        });
+        
+        userRegistration.setOnKeyTyped(e -> {
+            userRegistration.setText(checkText(userRegistration.getText()));
+            userRegistration.positionCaret(userRegistration.getText().length());
+        });
+        
+        userLodging.setOnKeyTyped(e -> {
+            userLodging.setText(checkText(userLodging.getText()));
+            userLodging.positionCaret(userLodging.getText().length());
         });
         
         Button b1 = new Button("Calculate");
@@ -103,6 +138,9 @@ public class Lab04 extends Application {
         stage.show();
     }
     
+    /*
+    Method for checking that text inputed into textboxes numbers with up to two decimals
+    */
     public String checkText(String tf) {
         for (int i = 0; i < tf.length(); i++) {
             if(!Character.isDigit(tf.charAt(i))) {
