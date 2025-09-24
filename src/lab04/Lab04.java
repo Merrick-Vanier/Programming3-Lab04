@@ -59,7 +59,7 @@ public class Lab04 extends Application {
         Label miles = new Label("Enter the number of miles driven");
         gp.add(miles, 0, 3);
         
-        TextField userMiles = new TextField("0.00");
+        TextField userMiles = new TextField("0");
         gp.add(userMiles, 1, 3);
         
         Label parkingFees = new Label("Enter the amount paid for parking");
@@ -86,6 +86,16 @@ public class Lab04 extends Application {
         TextField userLodging = new TextField("0.00");
         gp.add(userLodging, 1, 7);
         
+        Button b1 = new Button("Calculate");
+        gp.add(b1, 0, 8);
+        
+        Label totalExpenses = new Label("Total expenses: ");
+        gp.add(totalExpenses, 0, 9);
+        
+        Label allowedExpenses = new Label("Expenses covered: ");
+        gp.add(allowedExpenses, 0, 10);        
+        
+        
         userTripDays.setOnKeyTyped(e -> {
             for (int i = 0; i < userTripDays.getText().length(); i++) {
                 if(!Character.isDigit(userTripDays.getText().charAt(i))) {
@@ -106,7 +116,11 @@ public class Lab04 extends Application {
         });
         
         userMiles.setOnKeyTyped(e -> {
-            userMiles.setText(checkText(userMiles.getText()));
+            for (int i = 0; i < userMiles.getText().length(); i++) {
+                if(!Character.isDigit(userMiles.getText().charAt(i))) {
+                userMiles.setText(userMiles.getText().substring(0, i) + userMiles.getText().substring(i + 1, userMiles.getText().length()));
+                }
+            }
             userMiles.positionCaret(userMiles.getText().length());
         });
         
@@ -130,8 +144,26 @@ public class Lab04 extends Application {
             userLodging.positionCaret(userLodging.getText().length());
         });
         
-        Button b1 = new Button("Calculate");
+        double[] expenses = new double[2]; 
         
+        b1.setOnAction(e -> {
+            expenses[0] = Double.parseDouble(userAirfare.getText()) +
+                    Double.parseDouble(userCarRental.getText()) +
+                    Double.parseDouble(userParkingFees.getText()) +
+                    Double.parseDouble(userTaxiCharges.getText()) +
+                    Double.parseDouble(userRegistration.getText()) +
+                    Double.parseDouble(userLodging.getText()) * Integer.parseInt(userTripDays.getText());
+            totalExpenses.setText(totalExpenses.getText() + expenses[0]);
+            
+            expenses[1] = 37 * Integer.parseInt(userTripDays.getText()) + 
+                    10 * Integer.parseInt(userTripDays.getText()) + 
+                    20 * Integer.parseInt(userTripDays.getText()) +
+                    95 * Integer.parseInt(userTripDays.getText()) + 
+                    0.27 * Integer.parseInt(userMiles.getText());
+            
+           allowedExpenses.setText(allowedExpenses.getText() + expenses[1]);
+        });
+
         
         Scene s = new Scene(bp);
         stage.setScene(s);
