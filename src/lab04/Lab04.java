@@ -194,9 +194,10 @@ public class Lab04 extends Application {
                expensesDifference.setText("You spent just as much as we allowed");
            }
         });
-
         
         Scene s = new Scene(bp);
+        s.getStylesheets().add("CSSLab04");
+        
         stage.setScene(s);
         stage.show();
     }
