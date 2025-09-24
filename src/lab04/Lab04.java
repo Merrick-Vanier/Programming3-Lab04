@@ -6,6 +6,7 @@ package lab04;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -40,7 +41,7 @@ public class Lab04 extends Application {
         Label tripDays = new Label("Enter the number of days on the trip");
         gp.add(tripDays, 0, 0);
         
-        TextField userTripDays = new TextField();
+        TextField userTripDays = new TextField("0.00");
         gp.add(userTripDays, 1, 0);
 
         Label airfare = new Label("Enter the amount paid for flight");
@@ -79,11 +80,20 @@ public class Lab04 extends Application {
         TextField userRegistration = new TextField();
         gp.add(userRegistration, 1, 6);
         
-        Label lodging = new Label("Enter the amount paid for lodging");
+        Label lodging = new Label("Enter the amount paid for lodging each day");
         gp.add(lodging, 0, 7);
         
         TextField userLodging = new TextField();
         gp.add(userLodging, 1, 7);
+        
+        userTripDays.setOnKeyTyped(e -> {
+            userTripDays.setText(checkText(userTripDays.getText()));
+            userTripDays.positionCaret(userTripDays.getText().length());
+//            if(!Character.isDigit(userTripDays.getText().charAt(userTripDays.getText().length() - 1)) && '.' != userTripDays.getText().charAt(userTripDays.getText().length() - 1)) {
+//                userTripDays.setText(userTripDays.getText().substring(0, userTripDays.getText().length() - 1));
+//                userTripDays.positionCaret(userTripDays.getText().length());
+//            }
+        });
         
         Button b1 = new Button("Calculate");
         
@@ -91,6 +101,42 @@ public class Lab04 extends Application {
         Scene s = new Scene(bp);
         stage.setScene(s);
         stage.show();
+    }
+    
+    public String checkText(String tf) {
+        for (int i = 0; i < tf.length(); i++) {
+            if(!Character.isDigit(tf.charAt(i))) {
+                tf = tf.substring(0, i) + tf.substring(i + 1, tf.length());
+            }
+        }
+        
+        boolean leadingZero = true;
+        while (leadingZero == true) {
+            if (tf.isEmpty()) {
+                leadingZero = false;
+            }
+            else if(tf.charAt(0) == '0') {
+                tf = tf.substring(1, tf.length());
+            }
+            else {
+                leadingZero = false;
+            }
+        }
+        
+        if (tf.isEmpty()) {
+            tf = "0.00";
+        }
+        else if(tf.length() < 2) {
+            tf = "0.0" + tf;
+        }
+        else if(tf.length() < 3) {
+            tf = "0." + tf;
+        }
+        else {
+            tf = tf.substring(0, tf.length() - 2) + "." + tf.substring(tf.length() - 2);
+        }
+        
+        return(tf);
     }
     
 }
