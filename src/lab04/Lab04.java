@@ -95,6 +95,8 @@ public class Lab04 extends Application {
         Label allowedExpenses = new Label("Expenses covered: ");
         gp.add(allowedExpenses, 0, 10);        
         
+        Label expensesDifference = new Label("");
+        gp.add(expensesDifference, 0, 11);
         
         userTripDays.setOnKeyTyped(e -> {
             for (int i = 0; i < userTripDays.getText().length(); i++) {
@@ -144,7 +146,7 @@ public class Lab04 extends Application {
             userLodging.positionCaret(userLodging.getText().length());
         });
         
-        double[] expenses = new double[2]; 
+        double[] expenses = new double[3]; 
         
         b1.setOnAction(e -> {
             expenses[0] = Double.parseDouble(userAirfare.getText()) +
@@ -153,15 +155,44 @@ public class Lab04 extends Application {
                     Double.parseDouble(userTaxiCharges.getText()) +
                     Double.parseDouble(userRegistration.getText()) +
                     Double.parseDouble(userLodging.getText()) * Integer.parseInt(userTripDays.getText());
-            totalExpenses.setText(totalExpenses.getText() + expenses[0]);
+            totalExpenses.setText("Total expenses: " + expenses[0]);
             
             expenses[1] = 37 * Integer.parseInt(userTripDays.getText()) + 
                     10 * Integer.parseInt(userTripDays.getText()) + 
                     20 * Integer.parseInt(userTripDays.getText()) +
-                    95 * Integer.parseInt(userTripDays.getText()) + 
-                    0.27 * Integer.parseInt(userMiles.getText());
-            
-           allowedExpenses.setText(allowedExpenses.getText() + expenses[1]);
+                    95 * Integer.parseInt(userTripDays.getText());
+            if (userCarRental.getText().equals("0.00")) {
+                expenses[1] += 0.27 * Integer.parseInt(userMiles.getText());
+            }
+           allowedExpenses.setText("Maximum expenses covered in total: " + expenses[1]);
+           
+           expenses[2] = Double.parseDouble(userAirfare.getText()) +
+                   Double.parseDouble(userCarRental.getText()) +
+                   Double.parseDouble(userRegistration.getText()) -
+                   37 * Integer.parseInt(userTripDays.getText());
+           
+           if (userCarRental.getText().equals("0.00")) {
+                expenses[2] += 0.27 * Integer.parseInt(userMiles.getText());
+            }
+           if (Double.parseDouble(userParkingFees.getText()) > 10 * Integer.parseInt(userTripDays.getText())) {
+               expenses[2] = expenses[2] + Double.parseDouble(userParkingFees.getText()) - 10 * Integer.parseInt(userTripDays.getText());
+           }
+           if (Double.parseDouble(userTaxiCharges.getText()) > 20 * Integer.parseInt(userTripDays.getText())) {
+               expenses[2] = expenses[2] + Double.parseDouble(userTaxiCharges.getText()) - 20 * Integer.parseInt(userTripDays.getText());
+           }
+           if (Double.parseDouble(userLodging.getText()) > 95 * Integer.parseInt(userTripDays.getText())) {
+               expenses[2] = expenses[2] + Double.parseDouble(userLodging.getText()) - 95 * Integer.parseInt(userTripDays.getText());
+           }
+           
+           if(expenses[2] > 0) {
+               expensesDifference.setText("You owe: " + expenses[2]);
+           }
+           else if(expenses[2] < 0) {
+               expensesDifference.setText("You saved the company: " + expenses[2] * -1);
+           }
+           else {
+               expensesDifference.setText("You spent just as much as we allowed");
+           }
         });
 
         
